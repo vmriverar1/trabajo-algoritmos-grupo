@@ -1,0 +1,4 @@
+admin-12345
+usuario1-contraseña1
+usuario2-contraseña2
+asistenteInventario-Inventario321
