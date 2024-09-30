@@ -2,6 +2,7 @@ package Trabajo;
 
 import java.util.Iterator;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Producto {
     private final String nombre;
@@ -50,6 +51,14 @@ public class Producto {
         return costoTotal;
     }
 
+    public BigDecimal calcularCostoUnitarioTotal() {
+        BigDecimal costoUnitarioTotal = BigDecimal.ZERO;
+        for (Lote lote : lotes) {
+            costoUnitarioTotal = costoUnitarioTotal.add(lote.getCostoUnitario());
+        }
+        return costoUnitarioTotal.setScale(2, RoundingMode.HALF_UP);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -57,6 +66,8 @@ public class Producto {
                 .append("\nCategoría: ").append(categoria)
                 .append("\nStock Total: ").append(obtenerCantidadTotal())
                 .append("\nCosto Total: S/.").append(calcularCostoTotal())
+                .append("\nCosto Unitario Total: S/.").append(calcularCostoUnitarioTotal())
+
                 .append("\nReceta:\n").append(receta)
                 .append("\nLotes:\n");
 

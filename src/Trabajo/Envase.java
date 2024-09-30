@@ -45,6 +45,14 @@ public class Envase {
         return costoTotal.setScale(2, RoundingMode.HALF_UP);
     }
 
+    public BigDecimal calcularCostoUnitarioTotal() {
+        BigDecimal costoUnitarioTotal = BigDecimal.ZERO;
+        for (Lote lote : lotes) {
+            costoUnitarioTotal = costoUnitarioTotal.add(lote.getCostoUnitario());
+        }
+        return costoUnitarioTotal.setScale(2, RoundingMode.HALF_UP);
+    }
+
     public void consumirCantidad(int cantidad) throws StockBajoException {
         int cantidadRestante = cantidad;
         Iterator<Lote> iterator = lotes.iterator();
@@ -71,6 +79,7 @@ public class Envase {
                 .append("\nTipo: ").append(tipo)
                 .append("\nStock Total: ").append(obtenerCantidadTotal())
                 .append("\nCosto Total: S/.").append(calcularCostoTotal().toPlainString())
+                .append("\nCosto Unitario: S/.").append(calcularCostoUnitarioTotal().toPlainString())
                 .append("\nLotes:\n");
 
         for (Lote lote : lotes) {

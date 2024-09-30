@@ -38,7 +38,7 @@ public class Inventario {
 
     public Envase buscarEnvase(String nombre) {
         for (Envase envase : envases) {
-            if (envase.getNombre().equalsIgnoreCase(nombre)) {
+            if (envase.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
                 return envase;
             }
         }

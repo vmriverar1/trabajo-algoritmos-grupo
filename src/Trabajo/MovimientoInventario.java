@@ -20,6 +20,6 @@ public class MovimientoInventario {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return "Movimiento [" + tipoMovimiento + "] - Fecha: " + sdf.format(fecha) + ", Descripción: " + descripcion + ", Cantidad: " + cantidad;
+        return "Movimiento [" + tipoMovimiento + "] - Fecha: " + sdf.format(fecha) + ", Descripción: " + descripcion + ", Cantidad: " + cantidad + " unidades";
     }
 }

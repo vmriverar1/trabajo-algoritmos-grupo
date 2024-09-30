@@ -70,12 +70,12 @@ public class SistemaInventario {
         do {
             System.out.println("\n=== Menú Principal ===");
             System.out.println("1. Registrar Ingrediente");
-            System.out.println("2. Registrar Envase");
+            System.out.println("2. Ingresar envases");
             System.out.println("3. Registrar Producto");
             System.out.println("4. Generar Reporte");
-            System.out.println("5. Agregar Lote de Ingrediente");
-            System.out.println("6. Pasar a Producción");
-            System.out.println("7. Reporte de Movimientos");
+            System.out.println("5. Agregar stock de Ingrediente");
+            System.out.println("6. Crear Orden de Producción");
+            System.out.println("7. Reporte de producciones");
             System.out.println("8. Buscar Ingrediente o Envase");
             System.out.println("9. Salir");
             System.out.print("Seleccione una opción: ");
@@ -277,7 +277,7 @@ public class SistemaInventario {
     }
 
     private void pasarAProduccion(Scanner scanner) {
-        System.out.println("\n=== Pasar a Producción ===");
+        System.out.println("\n=== Crear Orden de Producción ===");
         List<Producto> listaProductos = inventario.getProductos();
         if (listaProductos.isEmpty()) {
             System.out.println("No hay productos registrados.");
@@ -378,7 +378,7 @@ public class SistemaInventario {
     }
 
     private void reporteMovimientos() {
-        System.out.println("\n=== Reporte de Movimientos ===");
+        System.out.println("\n=== Reporte de Producciones ===");
         for (MovimientoInventario movimiento : movimientos) {
             System.out.println(movimiento);
         }
