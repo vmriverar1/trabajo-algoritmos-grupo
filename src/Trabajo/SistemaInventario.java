@@ -39,7 +39,7 @@ public class SistemaInventario {
     }
 
     private void cargarDatosIniciales() {
-        String dataFilePath = "src/data.txt";
+        String dataFilePath = "src/Trabajo/data.txt";
         DataLoader dataLoader = new DataLoader();
         dataLoader.cargarDatos(dataFilePath, inventario);
     }
