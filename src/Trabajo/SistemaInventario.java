@@ -73,10 +73,11 @@ public class SistemaInventario {
                 System.out.println("3. Registrar Producto");
                 System.out.println("4. Generar Reporte");
                 System.out.println("5. Agregar Stock de Ingrediente");
-                System.out.println("6. Crear Orden de Producción");
-                System.out.println("7. Reporte de Producciones");
-                System.out.println("8. Buscar Ingrediente o Envase");
-                System.out.println("9. Salir");
+                System.out.println("6. Agregar Stock de Envase");
+                System.out.println("7. Crear Orden de Producción");
+                System.out.println("8. Reporte de Producciones");
+                System.out.println("9. Buscar Ingrediente o Envase");
+                System.out.println("0. Salir");
                 System.out.print("Seleccione una opción: ");
                 String opcionStr = scanner.nextLine();
                 opcion = Integer.parseInt(opcionStr);
@@ -98,15 +99,18 @@ public class SistemaInventario {
                         agregarLoteIngrediente(scanner);
                         break;
                     case 6:
-                        pasarAProduccion(scanner);
+                        agregarLoteEnvase(scanner);
                         break;
                     case 7:
-                        reporteMovimientos();
+                        pasarAProduccion(scanner);
                         break;
                     case 8:
-                        buscarIngredienteOEnvase(scanner);
+                        reporteMovimientos();
                         break;
                     case 9:
+                        buscarIngredienteOEnvase(scanner);
+                        break;
+                    case 0:
                         System.out.println("Saliendo del sistema.");
                         break;
                     default:
@@ -316,6 +320,45 @@ public class SistemaInventario {
             }
 
             System.out.println("Lotes agregados exitosamente al ingrediente.");
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Regresando al menú principal.");
+        }
+    }
+
+    private void agregarLoteEnvase(Scanner scanner) {
+        System.out.println("\n=== Agregar Stock de Envase ===");
+        try {
+            mostrarListaEnvases();
+            System.out.print("Ingrese el número del envase o 0 para cancelar: ");
+            int numEnvase = Integer.parseInt(scanner.nextLine());
+            if (numEnvase == 0) {
+                System.out.println("Operación cancelada.");
+                return;
+            }
+            List<Envase> listaEnvases = inventario.getEnvases();
+            if (numEnvase < 1 || numEnvase > listaEnvases.size()) {
+                System.out.println("Número inválido.");
+                return;
+            }
+            Envase envase = listaEnvases.get(numEnvase - 1);
+
+            System.out.print("¿Cuántos lotes desea agregar? (Ingrese 0 para cancelar): ");
+            int numLotes = Integer.parseInt(scanner.nextLine());
+            if (numLotes <= 0) {
+                System.out.println("Operación cancelada.");
+                return;
+            }
+
+            for (int i = 0; i < numLotes; i++) {
+                System.out.println("=== Lote " + (i + 1) + " ===");
+                String codigoLote = generarCodigoLote();
+                BigDecimal cantidad = leerCantidad(scanner, "Cantidad (ejemplo: 500): ");
+                BigDecimal precioTotal = leerCantidad(scanner, "Precio total del lote (ejemplo: 800.00): ");
+                Lote lote = new Lote(codigoLote, cantidad, precioTotal);
+                envase.agregarLote(lote);
+            }
+
+            System.out.println("Lotes agregados exitosamente al envase.");
         } catch (NumberFormatException e) {
             System.out.println("Entrada inválida. Regresando al menú principal.");
         }
