@@ -6,35 +6,35 @@ import java.math.RoundingMode;
 
 public class Lote {
     private final String codigoLote;
-    private int cantidad;
+    private BigDecimal cantidad;
     private final Date fechaIngreso;
     private Date fechaVencimiento;
     private BigDecimal costoUnitario;
 
-    public Lote(String codigoLote, int cantidad, Date fechaVencimiento, BigDecimal precioTotal) {
-        if (cantidad <= 0) {
+    public Lote(String codigoLote, BigDecimal cantidad, Date fechaVencimiento, BigDecimal precioTotal) {
+        if (cantidad.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
         }
         this.codigoLote = codigoLote;
         this.cantidad = cantidad;
         this.fechaIngreso = new Date(); 
         this.fechaVencimiento = fechaVencimiento;
-        this.costoUnitario = precioTotal.divide(new BigDecimal(cantidad), 4, RoundingMode.HALF_UP);
+        this.costoUnitario = precioTotal.divide(cantidad, 4, RoundingMode.HALF_UP);
     }
 
     // Constructor para envases sin fecha de vencimiento
-    public Lote(String codigoLote, int cantidad, BigDecimal precioTotal) {
-        if (cantidad <= 0) {
+    public Lote(String codigoLote, BigDecimal cantidad, BigDecimal precioTotal) {
+        if (cantidad.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
         }
         this.codigoLote = codigoLote;
         this.cantidad = cantidad;
         this.fechaIngreso = new Date(); 
         this.fechaVencimiento = null;
-        this.costoUnitario = precioTotal.divide(new BigDecimal(cantidad), 4, RoundingMode.HALF_UP);
+        this.costoUnitario = precioTotal.divide(cantidad, 4, RoundingMode.HALF_UP);
     }
 
-    public int getCantidad() {
+    public BigDecimal getCantidad() {
         return cantidad;
     }
 
@@ -42,11 +42,11 @@ public class Lote {
         return costoUnitario;
     }
 
-    public void reducirCantidad(int cantidadReducir) {
-        if (cantidadReducir > cantidad) {
+    public void reducirCantidad(BigDecimal cantidadReducir) {
+        if (cantidadReducir.compareTo(cantidad) > 0) {
             throw new IllegalArgumentException("No se puede reducir más de lo disponible en el lote.");
         }
-        cantidad -= cantidadReducir;
+        cantidad = cantidad.subtract(cantidadReducir);
     }
 
     @Override

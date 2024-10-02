@@ -8,13 +8,13 @@ public class Producto {
     private final String nombre;
     private final String categoria;
     private final Receta receta;
-    private final CircularLinkedList<Lote> lotes; 
+    private final CircularLinkedList<Lote> lotes;
 
     public Producto(String nombre, String categoria, Receta receta) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.receta = receta;
-        this.lotes = new CircularLinkedList<>(); 
+        this.lotes = new CircularLinkedList<>();
     }
 
     public String getNombre() {
@@ -26,29 +26,28 @@ public class Producto {
     }
 
     public void agregarLote(Lote lote) {
-        lotes.addLast(lote); 
+        lotes.addLast(lote);
     }
 
-    public int obtenerCantidadTotal() {
-        return obtenerCantidadTotalRecursivo(lotes.iterator(), 0);
+    public BigDecimal obtenerCantidadTotal() {
+        return obtenerCantidadTotalRecursivo(lotes.iterator(), BigDecimal.ZERO);
     }
 
-    private int obtenerCantidadTotalRecursivo(Iterator<Lote> iterator, int acumulador) {
+    private BigDecimal obtenerCantidadTotalRecursivo(Iterator<Lote> iterator, BigDecimal acumulador) {
         if (!iterator.hasNext()) {
-            return acumulador; 
+            return acumulador;
         }
         Lote lote = iterator.next();
-        acumulador += lote.getCantidad(); 
-        return obtenerCantidadTotalRecursivo(iterator, acumulador); 
+        acumulador = acumulador.add(lote.getCantidad());
+        return obtenerCantidadTotalRecursivo(iterator, acumulador);
     }
 
     public BigDecimal calcularCostoTotal() {
         BigDecimal costoTotal = BigDecimal.ZERO;
         for (Lote lote : lotes) {
-            BigDecimal cantidad = new BigDecimal(lote.getCantidad());
-            costoTotal = costoTotal.add(lote.getCostoUnitario().multiply(cantidad));
+            costoTotal = costoTotal.add(lote.getCostoUnitario().multiply(lote.getCantidad()));
         }
-        return costoTotal;
+        return costoTotal.setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal calcularCostoUnitarioTotal() {
@@ -67,7 +66,6 @@ public class Producto {
                 .append("\nStock Total: ").append(obtenerCantidadTotal())
                 .append("\nCosto Total: S/.").append(calcularCostoTotal())
                 .append("\nCosto Unitario Total: S/.").append(calcularCostoUnitarioTotal())
-
                 .append("\nReceta:\n").append(receta)
                 .append("\nLotes:\n");
 

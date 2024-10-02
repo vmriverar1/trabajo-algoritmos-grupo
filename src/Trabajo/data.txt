@@ -1,6 +1,0 @@
-Ingrediente|Sal|Materia prima
-Lote|Sal|1000|15.00|25/12/2024
-Ingrediente|Aceite|Materia prima
-Lote|Aceite|500|5.00|30/11/2024
-Envase|Envoltura impresa|Embalaje
-Lote|Envoltura impresa|1000|10.00|30/11/2027

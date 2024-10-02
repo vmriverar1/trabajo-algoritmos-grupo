@@ -1,16 +1,16 @@
-// MovimientoInventario.java
 package Trabajo;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 
 public class MovimientoInventario {
     private String tipoMovimiento;
     private Date fecha;
     private String descripcion;
-    private int cantidad;
+    private BigDecimal cantidad;
 
-    public MovimientoInventario(String tipoMovimiento, Date fecha, String descripcion, int cantidad) {
+    public MovimientoInventario(String tipoMovimiento, Date fecha, String descripcion, BigDecimal cantidad) {
         this.tipoMovimiento = tipoMovimiento;
         this.fecha = fecha;
         this.descripcion = descripcion;

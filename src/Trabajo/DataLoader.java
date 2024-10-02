@@ -22,28 +22,31 @@ public class DataLoader {
                     String categoria = parts[2];
                     ingredienteActual = new Ingrediente(nombre, categoria);
                     inventario.agregarIngrediente(ingredienteActual);
+                    envaseActual = null; // Reset envaseActual
                 } else if (parts[0].equalsIgnoreCase("Envase")) {
                     String nombre = parts[1];
                     String tipo = parts[2];
                     envaseActual = new Envase(nombre, tipo);
                     inventario.agregarEnvase(envaseActual);
+                    ingredienteActual = null; // Reset ingredienteActual
                 } else if (parts[0].equalsIgnoreCase("Lote")) {
                     if (ingredienteActual != null) {
-                        int cantidad = Integer.parseInt(parts[2]);
-                        BigDecimal precioTotal = new BigDecimal(parts[3]);
-                        Date fechaVencimiento = parseFecha(parts[4]);
+                        BigDecimal cantidad = new BigDecimal(parts[1]);
+                        BigDecimal precioTotal = new BigDecimal(parts[2]);
+                        Date fechaVencimiento = parseFecha(parts[3]);
                         String codigoLote = UUID.randomUUID().toString();
                         Lote lote = new Lote(codigoLote, cantidad, fechaVencimiento, precioTotal);
                         ingredienteActual.agregarLote(lote);
                     } else if (envaseActual != null) {
-                        int cantidad = Integer.parseInt(parts[2]);
-                        BigDecimal precioTotal = new BigDecimal(parts[3]);
+                        BigDecimal cantidad = new BigDecimal(parts[1]);
+                        BigDecimal precioTotal = new BigDecimal(parts[2]);
                         String codigoLote = UUID.randomUUID().toString();
                         Lote lote = new Lote(codigoLote, cantidad, precioTotal);
                         envaseActual.agregarLote(lote);
                     }
                 }
             }
+            System.out.println("Datos cargados exitosamente desde " + filePath);
         } catch (IOException e) {
             System.out.println("Error al cargar datos: " + e.getMessage());
         }
@@ -53,6 +56,7 @@ public class DataLoader {
         try {
             return new SimpleDateFormat("dd/MM/yyyy").parse(fechaStr);
         } catch (Exception e) {
+            System.out.println("Fecha inválida en los datos: " + fechaStr + ". Se usará la fecha actual.");
             return new Date(); 
         }
     }

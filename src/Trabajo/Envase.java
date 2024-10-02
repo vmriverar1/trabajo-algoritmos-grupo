@@ -23,24 +23,23 @@ public class Envase {
         lotes.addLast(lote);
     }
 
-    public int obtenerCantidadTotal() {
-        return obtenerCantidadTotalRecursivo(lotes.iterator(), 0);
+    public BigDecimal obtenerCantidadTotal() {
+        return obtenerCantidadTotalRecursivo(lotes.iterator(), BigDecimal.ZERO);
     }
 
-    private int obtenerCantidadTotalRecursivo(Iterator<Lote> iterator, int acumulador) {
+    private BigDecimal obtenerCantidadTotalRecursivo(Iterator<Lote> iterator, BigDecimal acumulador) {
         if (!iterator.hasNext()) {
             return acumulador;
         }
         Lote lote = iterator.next();
-        acumulador += lote.getCantidad();
+        acumulador = acumulador.add(lote.getCantidad());
         return obtenerCantidadTotalRecursivo(iterator, acumulador);
     }
 
     public BigDecimal calcularCostoTotal() {
         BigDecimal costoTotal = BigDecimal.ZERO;
         for (Lote lote : lotes) {
-            BigDecimal cantidad = new BigDecimal(lote.getCantidad());
-            costoTotal = costoTotal.add(lote.getCostoUnitario().multiply(cantidad));
+            costoTotal = costoTotal.add(lote.getCostoUnitario().multiply(lote.getCantidad()));
         }
         return costoTotal.setScale(2, RoundingMode.HALF_UP);
     }
@@ -53,21 +52,21 @@ public class Envase {
         return costoUnitarioTotal.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public void consumirCantidad(int cantidad) throws StockBajoException {
-        int cantidadRestante = cantidad;
+    public void consumirCantidad(BigDecimal cantidad) throws StockBajoException {
+        BigDecimal cantidadRestante = cantidad;
         Iterator<Lote> iterator = lotes.iterator();
-        while (iterator.hasNext() && cantidadRestante > 0) {
+        while (iterator.hasNext() && cantidadRestante.compareTo(BigDecimal.ZERO) > 0) {
             Lote lote = iterator.next();
-            int cantidadLote = lote.getCantidad();
-            if (cantidadLote <= cantidadRestante) {
-                cantidadRestante -= cantidadLote;
+            BigDecimal cantidadLote = lote.getCantidad();
+            if (cantidadLote.compareTo(cantidadRestante) <= 0) {
+                cantidadRestante = cantidadRestante.subtract(cantidadLote);
                 iterator.remove();
             } else {
                 lote.reducirCantidad(cantidadRestante);
-                cantidadRestante = 0;
+                cantidadRestante = BigDecimal.ZERO;
             }
         }
-        if (cantidadRestante > 0) {
+        if (cantidadRestante.compareTo(BigDecimal.ZERO) > 0) {
             throw new StockBajoException("Stock insuficiente para el envase: " + nombre);
         }
     }
