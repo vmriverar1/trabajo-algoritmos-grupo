@@ -38,7 +38,7 @@ public class Inventario {
 
     public Envase buscarEnvase(String nombre) {
         for (Envase envase : envases) {
-            if (envase.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+            if (envase.getNombre().equalsIgnoreCase(nombre)) {
                 return envase;
             }
         }
@@ -52,6 +52,46 @@ public class Inventario {
             }
         }
         return null;
+    }
+
+    // Nuevos métodos de búsqueda parcial
+    public List<Ingrediente> buscarIngredientes(String nombre) {
+        List<Ingrediente> resultados = new ArrayList<>();
+        for (Ingrediente ingrediente : ingredientes) {
+            if (ingrediente.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+                resultados.add(ingrediente);
+                if (resultados.size() == 3) {
+                    break;
+                }
+            }
+        }
+        return resultados;
+    }
+
+    public List<Envase> buscarEnvases(String nombre) {
+        List<Envase> resultados = new ArrayList<>();
+        for (Envase envase : envases) {
+            if (envase.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+                resultados.add(envase);
+                if (resultados.size() == 3) {
+                    break;
+                }
+            }
+        }
+        return resultados;
+    }
+
+    public List<Producto> buscarProductos(String nombre) {
+        List<Producto> resultados = new ArrayList<>();
+        for (Producto producto : productos) {
+            if (producto.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
+                resultados.add(producto);
+                if (resultados.size() == 3) {
+                    break;
+                }
+            }
+        }
+        return resultados;
     }
 
     public List<Ingrediente> getIngredientes() {
@@ -90,9 +130,24 @@ public class Inventario {
     public void generarReporteGeneral() {
         System.out.println("=== Reporte General ===");
         BigDecimal valorTotalProductos = BigDecimal.ZERO;
+        BigDecimal valorTotalIngredientes = BigDecimal.ZERO;
+        BigDecimal valorTotalEnvases = BigDecimal.ZERO;
+
         for (Producto producto : productos) {
             valorTotalProductos = valorTotalProductos.add(producto.calcularCostoTotal());
         }
+        for (Ingrediente ingrediente : ingredientes) {
+            valorTotalIngredientes = valorTotalIngredientes.add(ingrediente.calcularCostoTotal());
+        }
+        for (Envase envase : envases) {
+            valorTotalEnvases = valorTotalEnvases.add(envase.calcularCostoTotal());
+        }
+
+        BigDecimal valorTotal = valorTotalProductos.add(valorTotalIngredientes).add(valorTotalEnvases);
+
         System.out.println("Valor total de productos en almacén y en producción: S/." + valorTotalProductos);
+        System.out.println("Valor total de ingredientes en almacén: S/." + valorTotalIngredientes);
+        System.out.println("Valor total de envases en almacén: S/." + valorTotalEnvases);
+        System.out.println("Valor total del inventario: S/." + valorTotal);
     }
 }

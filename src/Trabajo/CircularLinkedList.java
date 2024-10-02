@@ -5,9 +5,9 @@ import java.util.NoSuchElementException;
 
 public class CircularLinkedList<T> implements Iterable<T> {
     // Nodo interno de la lista circular
-    private class Node<T> {
+    private class Node {
         T element;
-        Node<T> next;
+        Node next;
 
         Node(T element) {
             this.element = element;
@@ -15,13 +15,13 @@ public class CircularLinkedList<T> implements Iterable<T> {
     }
 
     // Atributos de la lista circular
-    private Node<T> head = null;
-    private Node<T> tail = null;
+    private Node head = null;
+    private Node tail = null;
     private int size = 0;
 
     // Método para agregar un elemento al final de la lista
     public void addLast(T element) {
-        Node<T> newNode = new Node<>(element);
+        Node newNode = new Node(element);
         if (isEmpty()) {
             head = newNode;
             tail = newNode;
@@ -50,6 +50,13 @@ public class CircularLinkedList<T> implements Iterable<T> {
         return removedElement;
     }
 
+    public T getFirst() {
+        if (isEmpty()) {
+            throw new NoSuchElementException("La lista está vacía.");
+        }
+        return head.element;
+    }
+
     public boolean isEmpty() {
         return size == 0;
     }
@@ -60,8 +67,19 @@ public class CircularLinkedList<T> implements Iterable<T> {
     }
 
     private class CircularLinkedListIterator implements Iterator<T> {
-        private Node<T> current = head;
-        private int elementsVisited = 0;
+        private Node current;
+        private Node previous;
+        private Node lastReturned;
+        private boolean canRemove;
+        private int elementsVisited;
+
+        public CircularLinkedListIterator() {
+            current = head;
+            previous = tail;
+            lastReturned = null;
+            canRemove = false;
+            elementsVisited = 0;
+        }
 
         @Override
         public boolean hasNext() {
@@ -70,13 +88,48 @@ public class CircularLinkedList<T> implements Iterable<T> {
 
         @Override
         public T next() {
-            if (!hasNext()) {
+            if (elementsVisited >= size || current == null) {
                 throw new NoSuchElementException();
             }
-            T element = current.element;
+            lastReturned = current;
             current = current.next;
             elementsVisited++;
-            return element;
+            canRemove = true;
+            return lastReturned.element;
+        }
+
+        @Override
+        public void remove() {
+            if (!canRemove) {
+                throw new IllegalStateException();
+            }
+            if (lastReturned == null) {
+                throw new IllegalStateException();
+            }
+
+            // Eliminar el nodo lastReturned
+            if (size == 1) {
+                // Solo un elemento
+                head = null;
+                tail = null;
+            } else if (lastReturned == head) {
+                head = head.next;
+                tail.next = head;
+            } else {
+                // Encontrar el nodo previo a lastReturned
+                Node prev = head;
+                while (prev.next != lastReturned) {
+                    prev = prev.next;
+                }
+                prev.next = lastReturned.next;
+                if (lastReturned == tail) {
+                    tail = prev;
+                }
+            }
+            size--;
+            elementsVisited--;
+            lastReturned = null;
+            canRemove = false;
         }
     }
 }

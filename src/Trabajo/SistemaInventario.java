@@ -30,7 +30,7 @@ public class SistemaInventario {
             return;
         }
 
-        cargarDatosIniciales(); // Carga datos de prueba desde data.txt
+        cargarDatosIniciales(); 
 
         autenticarUsuario();
         mostrarMenu();
@@ -470,7 +470,7 @@ public class SistemaInventario {
     }
 
     private void buscarIngredienteOEnvase(Scanner scanner) {
-        System.out.println("\n=== Buscar Ingrediente o Envase ===");
+        System.out.println("\n=== Buscar Ingrediente, Envase o Producto ===");
         System.out.print("Ingrese el nombre a buscar o '0' para cancelar: ");
         String nombreBusqueda = scanner.nextLine();
         if (nombreBusqueda.equals("0")) {
@@ -478,20 +478,53 @@ public class SistemaInventario {
             return;
         }
 
-        Ingrediente ingrediente = inventario.buscarIngrediente(nombreBusqueda);
-        if (ingrediente != null) {
-            System.out.println("Ingrediente encontrado:");
-            System.out.println(ingrediente);
-            return;
+        List<Ingrediente> ingredientesEncontrados = inventario.buscarIngredientes(nombreBusqueda);
+        List<Envase> envasesEncontrados = inventario.buscarEnvases(nombreBusqueda);
+        List<Producto> productosEncontrados = inventario.buscarProductos(nombreBusqueda);
+
+        boolean encontrado = false;
+
+        if (!ingredientesEncontrados.isEmpty()) {
+            System.out.println("Ingredientes encontrados:");
+            for (int i = 0; i < ingredientesEncontrados.size(); i++) {
+                System.out.println((i + 1) + ". " + ingredientesEncontrados.get(i).getNombre());
+            }
+            System.out.print("Seleccione un ingrediente por número o 0 para continuar: ");
+            int opcion = Integer.parseInt(scanner.nextLine());
+            if (opcion > 0 && opcion <= ingredientesEncontrados.size()) {
+                System.out.println(ingredientesEncontrados.get(opcion - 1));
+            }
+            encontrado = true;
         }
 
-        Envase envase = inventario.buscarEnvase(nombreBusqueda);
-        if (envase != null) {
-            System.out.println("Envase encontrado:");
-            System.out.println(envase);
-            return;
+        if (!envasesEncontrados.isEmpty()) {
+            System.out.println("Envases encontrados:");
+            for (int i = 0; i < envasesEncontrados.size(); i++) {
+                System.out.println((i + 1) + ". " + envasesEncontrados.get(i).getNombre());
+            }
+            System.out.print("Seleccione un envase por número o 0 para continuar: ");
+            int opcion = Integer.parseInt(scanner.nextLine());
+            if (opcion > 0 && opcion <= envasesEncontrados.size()) {
+                System.out.println(envasesEncontrados.get(opcion - 1));
+            }
+            encontrado = true;
         }
 
-        System.out.println("No se encontró ningún ingrediente o envase con ese nombre.");
+        if (!productosEncontrados.isEmpty()) {
+            System.out.println("Productos encontrados:");
+            for (int i = 0; i < productosEncontrados.size(); i++) {
+                System.out.println((i + 1) + ". " + productosEncontrados.get(i).getNombre());
+            }
+            System.out.print("Seleccione un producto por número o 0 para continuar: ");
+            int opcion = Integer.parseInt(scanner.nextLine());
+            if (opcion > 0 && opcion <= productosEncontrados.size()) {
+                System.out.println(productosEncontrados.get(opcion - 1));
+            }
+            encontrado = true;
+        }
+
+        if (!encontrado) {
+            System.out.println("No se encontró ningún ingrediente, envase o producto con ese nombre.");
+        }
     }
 }
