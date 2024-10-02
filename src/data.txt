@@ -1,8 +1,8 @@
-Ingrediente|Harina|Cereales
-Lote|100.5|500.00|31/12/2024
-Lote|200.25|950.00|31/12/2025
-Ingrediente|Azúcar|Endulzantes
-Lote|50|100.00|31/12/2024
-Envase|Botella 500ml|Plástico
+Ingrediente|Pimienta|pime
+Lote|2000|4000.00|31/12/2024
+Lote|4000|9500.00|31/12/2024
+Ingrediente|Comino|comi
+Lote|3500|9000.00|31/12/2024
+Envase|bolsa de plastico|Plástico
 Lote|1000|2000.00
 Lote|500|1000.00
