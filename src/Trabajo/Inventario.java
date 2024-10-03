@@ -107,6 +107,11 @@ public class Inventario {
     }
 
     public void generarReporteProductos() {
+        if (productos.isEmpty()) {
+            System.out.println("No hay productos registrados en el inventario.");
+            return;
+        }
+
         System.out.println("=== Reporte de Productos ===");
         for (Producto producto : productos) {
             System.out.println(producto);
@@ -114,6 +119,12 @@ public class Inventario {
     }
 
     public void generarReporteIngredientes() {
+
+        if (ingredientes.isEmpty()) {
+            System.out.println("No hay ingredientes registrados en el inventario.");
+            return;
+        }
+
         System.out.println("=== Reporte de Ingredientes ===");
         for (Ingrediente ingrediente : ingredientes) {
             System.out.println(ingrediente);
@@ -121,6 +132,12 @@ public class Inventario {
     }
 
     public void generarReporteEnvases() {
+
+        if (envases.isEmpty()) {
+            System.out.println("No hay envases registrados en el inventario.");
+            return;
+        }
+
         System.out.println("=== Reporte de Envases ===");
         for (Envase envase : envases) {
             System.out.println(envase);

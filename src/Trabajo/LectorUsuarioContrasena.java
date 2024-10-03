@@ -45,7 +45,6 @@ public class LectorUsuarioContrasena {
             }
 
             if (lineasValidas > 0) {
-                System.out.println("Credenciales cargadas exitosamente.");
                 return 1; 
             } else {
                 System.out.println("No se encontraron credenciales válidas en el archivo.");

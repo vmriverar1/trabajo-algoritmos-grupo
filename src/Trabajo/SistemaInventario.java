@@ -75,13 +75,12 @@ public class SistemaInventario {
                 System.out.println("5. Agregar Stock de Ingrediente");
                 System.out.println("6. Agregar Stock de Envase");
                 System.out.println("7. Crear Orden de Producción");
-                System.out.println("8. Reporte de Producciones");
-                System.out.println("9. Buscar Ingrediente o Envase");
+                System.out.println("8. Buscar Ingrediente o Envase");
                 System.out.println("0. Salir");
                 System.out.print("Seleccione una opción: ");
                 String opcionStr = scanner.nextLine();
                 opcion = Integer.parseInt(opcionStr);
-
+    
                 switch (opcion) {
                     case 1:
                         registrarIngrediente(scanner);
@@ -105,9 +104,6 @@ public class SistemaInventario {
                         pasarAProduccion(scanner);
                         break;
                     case 8:
-                        reporteMovimientos();
-                        break;
-                    case 9:
                         buscarIngredienteOEnvase(scanner);
                         break;
                     case 0:
@@ -121,7 +117,7 @@ public class SistemaInventario {
             } catch (Exception e) {
                 System.out.println("Ocurrió un error: " + e.getMessage());
             }
-        } while (opcion != 9);
+        } while (opcion != 0); 
     }
 
     private void registrarIngrediente(Scanner scanner) {
@@ -372,6 +368,7 @@ public class SistemaInventario {
                 System.out.println("No hay productos registrados.");
                 return;
             }
+            // Mostrar la lista de productos disponibles
             for (int i = 0; i < listaProductos.size(); i++) {
                 System.out.println((i + 1) + ". " + listaProductos.get(i).getNombre());
             }
@@ -386,29 +383,75 @@ public class SistemaInventario {
                 return;
             }
             Producto producto = listaProductos.get(numProducto - 1);
-
-            System.out.print("¿Cuántos lotes desea producir? (Ingrese 0 para cancelar): ");
-            int numLotes = Integer.parseInt(scanner.nextLine());
-            if (numLotes <= 0) {
-                System.out.println("Operación cancelada.");
+    
+            // Calcular la cantidad máxima posible antes de solicitar el número de lotes
+            int maxCantidadPosible = producto.getReceta().calcularMaximaProduccion();
+            if (maxCantidadPosible == 0) {
+                System.out.println("No hay suficientes ingredientes o envases para producir este producto.");
+                System.out.println("Cantidad máxima posible: 0");
                 return;
             }
-
+            System.out.println("Cantidad máxima que puede producir de '" + producto.getNombre() + "': " + maxCantidadPosible);
+    
+            int numLotes;
+            while (true) {
+                System.out.print("¿Cuántos lotes desea producir? (Ingrese 0 para cancelar): ");
+                numLotes = Integer.parseInt(scanner.nextLine());
+                if (numLotes == 0) {
+                    System.out.println("Operación cancelada.");
+                    return;
+                }
+                if (numLotes < 0) {
+                    System.out.println("Número inválido. Intente nuevamente.");
+                    continue;
+                }
+                // Confirmar el número de lotes ingresado
+                System.out.print("Ha ingresado '" + numLotes + "' lotes. ¿Es correcto? (S/N): ");
+                String confirmacion = scanner.nextLine();
+                if (confirmacion.equalsIgnoreCase("S")) {
+                    break;
+                } else {
+                    System.out.println("Por favor, ingrese nuevamente el número de lotes.");
+                }
+            }
+    
             for (int i = 0; i < numLotes; i++) {
                 System.out.println("=== Lote de Producción " + (i + 1) + " ===");
-                BigDecimal cantidadLote = leerCantidad(scanner, "Cantidad por lote (ejemplo: 100): ");
-                int maxCantidadPosible = producto.getReceta().calcularMaximaProduccion();
-                if (cantidadLote.compareTo(new BigDecimal(maxCantidadPosible)) > 0) {
-                    System.out.println("No hay suficientes ingredientes o envases para producir esta cantidad.");
-                    System.out.println("Cantidad máxima posible: " + maxCantidadPosible);
-                    System.out.print("¿Desea producir la cantidad máxima posible? (S/N): ");
-                    String respuesta = scanner.nextLine();
-                    if (respuesta.equalsIgnoreCase("S")) {
-                        cantidadLote = new BigDecimal(maxCantidadPosible);
-                    } else {
+    
+                // Recalcular la cantidad máxima posible antes de cada lote
+                maxCantidadPosible = producto.getReceta().calcularMaximaProduccion();
+                if (maxCantidadPosible == 0) {
+                    System.out.println("No hay suficientes ingredientes o envases para producir más lotes.");
+                    System.out.println("Cantidad máxima posible: 0");
+                    System.out.println("Producción cancelada para los lotes restantes.");
+                    break; 
+                }
+    
+                BigDecimal cantidadLote;
+                while (true) {
+                    cantidadLote = leerCantidad(scanner, "Cantidad por lote (máximo " + maxCantidadPosible + ", 0 para cancelar): ");
+                    if (cantidadLote.compareTo(BigDecimal.ZERO) == 0) {
                         System.out.println("Producción cancelada para este lote.");
-                        continue;
+                        break;
                     }
+                    if (cantidadLote.compareTo(new BigDecimal(maxCantidadPosible)) > 0) {
+                        System.out.println("No hay suficientes ingredientes o envases para producir esta cantidad.");
+                        System.out.println("Cantidad máxima posible: " + maxCantidadPosible);
+                        System.out.print("¿Desea producir la cantidad máxima posible? (S/N): ");
+                        String respuesta = scanner.nextLine();
+                        if (respuesta.equalsIgnoreCase("S")) {
+                            cantidadLote = new BigDecimal(maxCantidadPosible);
+                            break;
+                        } else {
+                            System.out.println("Por favor, ingrese una cantidad válida.");
+                            continue;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if (cantidadLote.compareTo(BigDecimal.ZERO) == 0) {
+                    continue; // Saltar al siguiente lote si el usuario canceló este
                 }
                 try {
                     producto.getReceta().consumirIngredientes(cantidadLote);
@@ -433,6 +476,7 @@ public class SistemaInventario {
             System.out.println("Error al crear orden de producción: " + e.getMessage());
         }
     }
+    
 
     private String generarCodigoLote() {
         return UUID.randomUUID().toString();
@@ -473,7 +517,8 @@ public class SistemaInventario {
         System.out.println("1. Reporte de Productos");
         System.out.println("2. Reporte de Ingredientes");
         System.out.println("3. Reporte de Envases");
-        System.out.println("4. Reporte General");
+        System.out.println("4. Reporte de Producciones");
+        System.out.println("5. Reporte General");
         System.out.print("Seleccione una opción o 0 para volver: ");
         try {
             int opcion = Integer.parseInt(scanner.nextLine());
@@ -489,6 +534,9 @@ public class SistemaInventario {
                     inventario.generarReporteEnvases();
                     break;
                 case 4:
+                    reporteMovimientos();
+                    break;
+                case 5:
                     inventario.generarReporteGeneral();
                     break;
                 case 0:

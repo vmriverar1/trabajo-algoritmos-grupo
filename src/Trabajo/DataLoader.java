@@ -46,7 +46,6 @@ public class DataLoader {
                     }
                 }
             }
-            System.out.println("Datos cargados exitosamente desde " + filePath);
         } catch (IOException e) {
             System.out.println("Error al cargar datos: " + e.getMessage());
         }
