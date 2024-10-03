@@ -68,15 +68,15 @@ public class SistemaInventario {
         do {
             try {
                 System.out.println("\n=== Menú Principal ===");
-                System.out.println("1. Registrar Ingrediente");
-                System.out.println("2. Ingresar Envases");
-                System.out.println("3. Registrar Producto");
+                System.out.println("1. Registrar Materias Primas");
+                System.out.println("2. Registrar Envases y embalajes");
+                System.out.println("3. Registrar Producto terminado");
                 System.out.println("4. Generar Reporte");
-                System.out.println("5. Agregar Stock de Ingrediente");
-                System.out.println("6. Agregar Stock de Envase");
+                System.out.println("5. Agregar Stock de materia prima");
+                System.out.println("6. Agregar Stock de Envases y embalajes");
                 System.out.println("7. Crear Orden de Producción");
                 System.out.println("8. Reporte de Producciones");
-                System.out.println("9. Buscar Ingrediente o Envase");
+                System.out.println("9. Buscar Materia primera o envase");
                 System.out.println("0. Salir");
                 System.out.print("Seleccione una opción: ");
                 String opcionStr = scanner.nextLine();
@@ -571,3 +571,39 @@ public class SistemaInventario {
         }
     }
 }
+/*
+1. en reporte general, falta corregir Valor total de productos en almacén y en producción: S/.0.00
+no esta calculando correctamente el valor total de los productos en almacen y en produccion
+2. falta mejorar la opcion de agregar stock de ingrediente y envases
+
+3. Sale error despues de ponerle que si produzca la maxima cantidad disponible:
+
+=== Crear Orden de Producción ===
+1. comino x 42 sbs
+Ingrese el número del producto a producir o 0 para cancelar: 1
+¿Cuántos lotes desea producir? (Ingrese 0 para cancelar): 1
+=== Lote de Producción 1 ===
+Cantidad por lote (ejemplo: 100): 20
+No hay suficientes ingredientes o envases para producir esta cantidad.
+Cantidad máxima posible: 11
+¿Desea producir la cantidad máxima posible? (S/N): s
+Error al crear orden de producción: remove
+
+4.   falta ajustar por coincidencia:
+...
+          if (ingrediente.getNombre().equalsIgnoreCase(nombre)) {
+...
+5. no se crea una orden de produccion a pesar que hay cantidad disponible
+
+=== Crear Orden de Producción ===
+1. comino x 42 sbs
+Ingrese el número del producto a producir o 0 para cancelar: 1
+¿Cuántos lotes desea producir? (Ingrese 0 para cancelar): 1
+=== Lote de Producción 1 ===
+Cantidad por lote (ejemplo: 100): 5
+Error al crear orden de producción: remove
+
+6.
+
+
+ */

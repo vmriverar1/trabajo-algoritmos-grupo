@@ -1,8 +1,21 @@
-Ingrediente|Pimienta|pime
+Ingrediente|Achiote Entero| Materias primas
 Lote|2000|4000.00|31/12/2024
 Lote|4000|9500.00|31/12/2024
-Ingrediente|Comino|comi
+Ingrediente|Aji panca entero|Materias primas
 Lote|3500|9000.00|31/12/2024
-Envase|bolsa de plastico|Plástico
-Lote|1000|2000.00
+Ingrediente|Sal|Materias primas
+Lote|3500|9000.00|31/12/2024
+Ingrediente|Aceite|Materias primas
+Lote|3500|9000.00|31/12/2024
+Ingrediente|Aji paprika entero|Materias primas
+Lote|3500|9000.00|31/12/2024
+Envase|Frasco|Frasco
+Lote|1000|200.00
+Lote|500|100.00
+Envase|Bolsa|Bolsa hermetica
+Lote|1000|200.00
+Lote|500|100.00
+Envase|Envoltura impresa cristal|Bolsa hermetica
 Lote|500|1000.00
+Lote|500|1000.00
+
