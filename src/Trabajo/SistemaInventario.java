@@ -125,9 +125,9 @@ public class SistemaInventario {
     }
 
     private void registrarIngrediente(Scanner scanner) {
-        System.out.println("\n=== Registrar Ingrediente ===");
+        System.out.println("\n=== Registrar Materia prima ===");
         try {
-            System.out.print("Nombre del ingrediente: ");
+            System.out.print("Nombre de la Materia prima: ");
             String nombre = scanner.nextLine();
             System.out.print("Categoría: ");
             String categoria = scanner.nextLine();
@@ -137,7 +137,7 @@ public class SistemaInventario {
             System.out.print("¿Cuántos lotes desea agregar? (Ingrese 0 para cancelar): ");
             int numLotes = Integer.parseInt(scanner.nextLine());
             if (numLotes <= 0) {
-                System.out.println("Registro de ingrediente cancelado.");
+                System.out.println("Registro de materia prima cancelado.");
                 return;
             }
 
@@ -159,7 +159,7 @@ public class SistemaInventario {
     }
 
     private void registrarEnvase(Scanner scanner) {
-        System.out.println("\n=== Registrar Envase ===");
+        System.out.println("\n=== Registrar Envases o envolturas ===");
         try {
             System.out.print("Nombre del envase: ");
             String nombre = scanner.nextLine();
@@ -194,7 +194,7 @@ public class SistemaInventario {
     private void registrarProducto(Scanner scanner) {
         System.out.println("\n=== Registrar Producto ===");
         try {
-            System.out.print("Nombre del producto: ");
+            System.out.print("Nombre del producto terminado: ");
             String nombre = scanner.nextLine();
             System.out.print("Categoría: ");
             String categoria = scanner.nextLine();
@@ -211,9 +211,9 @@ public class SistemaInventario {
             List<Ingrediente> listaIngredientes = inventario.getIngredientes();
             for (int i = 0; i < numIngredientes; i++) {
                 while (true) {
-                    System.out.println("=== Seleccione Ingrediente " + (i + 1) + " ===");
+                    System.out.println("=== Seleccione Materia prima " + (i + 1) + " ===");
                     mostrarListaIngredientes();
-                    System.out.print("Ingrese el número del ingrediente o 0 para cancelar: ");
+                    System.out.print("Ingrese el número de la materia prima o 0 para cancelar: ");
                     int numIngrediente = Integer.parseInt(scanner.nextLine());
                     if (numIngrediente == 0) {
                         System.out.println("Registro de producto cancelado.");
@@ -263,11 +263,11 @@ public class SistemaInventario {
             Producto producto = new Producto(nombre, categoria, receta);
 
             inventario.agregarProducto(producto);
-            System.out.println("Producto registrado exitosamente.");
+            System.out.println("Producto terminado registrado exitosamente.");
         } catch (NumberFormatException e) {
             System.out.println("Entrada inválida. Regresando al menú principal.");
         } catch (Exception e) {
-            System.out.println("Error al registrar producto: " + e.getMessage());
+            System.out.println("Error al registrar producto terminado: " + e.getMessage());
         }
     }
 
@@ -286,10 +286,10 @@ public class SistemaInventario {
     }
 
     private void agregarLoteIngrediente(Scanner scanner) {
-        System.out.println("\n=== Agregar Lote de Ingrediente ===");
+        System.out.println("\n=== Agregar Lote de Materia prima ===");
         try {
             mostrarListaIngredientes();
-            System.out.print("Ingrese el número del ingrediente o 0 para cancelar: ");
+            System.out.print("Ingrese el número de la Materia prima o 0 para cancelar: ");
             int numIngrediente = Integer.parseInt(scanner.nextLine());
             if (numIngrediente == 0) {
                 System.out.println("Operación cancelada.");
@@ -369,7 +369,7 @@ public class SistemaInventario {
         try {
             List<Producto> listaProductos = inventario.getProductos();
             if (listaProductos.isEmpty()) {
-                System.out.println("No hay productos registrados.");
+                System.out.println("No hay productos terminados registrados.");
                 return;
             }
             for (int i = 0; i < listaProductos.size(); i++) {
@@ -399,7 +399,7 @@ public class SistemaInventario {
                 BigDecimal cantidadLote = leerCantidad(scanner, "Cantidad por lote (ejemplo: 100): ");
                 int maxCantidadPosible = producto.getReceta().calcularMaximaProduccion();
                 if (cantidadLote.compareTo(new BigDecimal(maxCantidadPosible)) > 0) {
-                    System.out.println("No hay suficientes ingredientes o envases para producir esta cantidad.");
+                    System.out.println("No hay suficiente materia prima o envases para producir esta cantidad.");
                     System.out.println("Cantidad máxima posible: " + maxCantidadPosible);
                     System.out.print("¿Desea producir la cantidad máxima posible? (S/N): ");
                     String respuesta = scanner.nextLine();
@@ -471,7 +471,7 @@ public class SistemaInventario {
     private void generarReportes(Scanner scanner) {
         System.out.println("\n=== Generar Reportes ===");
         System.out.println("1. Reporte de Productos");
-        System.out.println("2. Reporte de Ingredientes");
+        System.out.println("2. Reporte de Materias primas");
         System.out.println("3. Reporte de Envases");
         System.out.println("4. Reporte General");
         System.out.print("Seleccione una opción o 0 para volver: ");
@@ -513,7 +513,7 @@ public class SistemaInventario {
     }
 
     private void buscarIngredienteOEnvase(Scanner scanner) {
-        System.out.println("\n=== Buscar Ingrediente, Envase o Producto ===");
+        System.out.println("\n=== Buscar Materias primas, Envase o Producto ===");
         System.out.print("Ingrese el nombre a buscar o '0' para cancelar: ");
         String nombreBusqueda = scanner.nextLine();
         if (nombreBusqueda.equals("0")) {
@@ -528,11 +528,11 @@ public class SistemaInventario {
         boolean encontrado = false;
 
         if (!ingredientesEncontrados.isEmpty()) {
-            System.out.println("Ingredientes encontrados:");
+            System.out.println("Materias primas encontradas:");
             for (int i = 0; i < ingredientesEncontrados.size(); i++) {
                 System.out.println((i + 1) + ". " + ingredientesEncontrados.get(i).getNombre());
             }
-            System.out.print("Seleccione un ingrediente por número o 0 para continuar: ");
+            System.out.print("Seleccione una materia prima por número o 0 para continuar: ");
             int opcion = Integer.parseInt(scanner.nextLine());
             if (opcion > 0 && opcion <= ingredientesEncontrados.size()) {
                 System.out.println(ingredientesEncontrados.get(opcion - 1));
@@ -545,7 +545,7 @@ public class SistemaInventario {
             for (int i = 0; i < envasesEncontrados.size(); i++) {
                 System.out.println((i + 1) + ". " + envasesEncontrados.get(i).getNombre());
             }
-            System.out.print("Seleccione un envase por número o 0 para continuar: ");
+            System.out.print("Seleccione un envase o embalaje por número o 0 para continuar: ");
             int opcion = Integer.parseInt(scanner.nextLine());
             if (opcion > 0 && opcion <= envasesEncontrados.size()) {
                 System.out.println(envasesEncontrados.get(opcion - 1));
@@ -567,7 +567,7 @@ public class SistemaInventario {
         }
 
         if (!encontrado) {
-            System.out.println("No se encontró ningún ingrediente, envase o producto con ese nombre.");
+            System.out.println("No se encontró ninguna materia prima, envase o producto con ese nombre.");
         }
     }
 }
