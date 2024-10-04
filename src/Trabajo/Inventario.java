@@ -112,6 +112,7 @@ public class Inventario {
             return;
         }
 
+        System.out.println("============================");
         System.out.println("=== Reporte de Productos ===");
         for (Producto producto : productos) {
             System.out.println(producto);

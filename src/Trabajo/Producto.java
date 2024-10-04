@@ -64,8 +64,6 @@ public class Producto {
         sb.append("Producto: ").append(nombre)
                 .append("\nCategoría: ").append(categoria)
                 .append("\nStock Total: ").append(obtenerCantidadTotal())
-                .append("\nCosto Total: S/.").append(calcularCostoTotal())
-                .append("\nCosto Unitario Total: S/.").append(calcularCostoUnitarioTotal())
                 .append("\nReceta:\n").append(receta)
                 .append("\nLotes:\n");
 
